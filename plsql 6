@@ -1,0 +1,19 @@
+declare
+	n number;
+	n1 number;
+	cursor s is 
+		select product_id,quantity from inventory;
+begin 
+	open s;
+	loop
+		fetch s into n,n1;
+	exit when s%notfound;
+	if n1>0 then 
+		update inventory set quantity=n1-1 where product_id=n;
+		insert into purchase_record values(n,'Purchased',sysdate);
+	else 
+		insert into purchase_record values(n,'OUT OF STOCk',sysdate);
+	end if;
+	end loop;
+end;
+/		
