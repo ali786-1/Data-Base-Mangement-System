@@ -1,0 +1,9 @@
+declare
+	num number:=&num;
+begin 
+	while num<=10 loop
+		insert into plsql1 values(num,num*num);
+		num:=num+1;
+	end loop;
+end;
+/
