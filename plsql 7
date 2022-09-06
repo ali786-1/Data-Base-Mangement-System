@@ -1,0 +1,32 @@
+declare 
+	b number;
+	e number;
+	en varchar(10);
+	h number;
+	d number;
+	p number;
+	p_t number;
+	g_s number;
+	n_s number;
+	cursor s is 	
+		select eno,ename,basic_pay,hra,da,pf,p_tax from emp7;
+begin
+	open s;
+	loop
+		fetch s into e,en,b,h,d,p,p_t;
+	exit when s%notfound;
+	update emp7 set hra=b*0.15 where eno=e;
+	update emp7 set da=b*0.62 where eno=e;
+	update emp7 set p_tax=b*0.02 where eno=e;
+	g_s:=b+h+d;
+	if g_s > 8000 then 	
+		update emp7 set pf=780 where eno=e;
+	else
+		update emp7 set pf=600 where eno=e;
+	end if;
+	update emp7 set gross_salary=g_s where eno=e;
+	n_s:=g_s-p-p_t;
+	dbms_output.put_line(' The employees '||e||' name: '||en||' hra: '||h||' da: '||d||' pf: '||p||' p_tax: '||p_t||' gross_sal: '||g_s||' net_sal: '||n_s);
+	end loop;
+end;
+/
